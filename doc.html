@@ -1,0 +1,1045 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>WhatsApp Embedded Signup - Official Flow</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                min-height: 100vh;
+                padding: 20px;
+            }
+
+            .container {
+                max-width: 1400px;
+                margin: 0 auto;
+                background: white;
+                border-radius: 15px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+            }
+
+            .header {
+                background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+                color: white;
+                padding: 30px;
+                text-align: center;
+            }
+
+            .header h1 {
+                font-size: 28px;
+                margin-bottom: 10px;
+            }
+
+            .header p {
+                opacity: 0.9;
+                font-size: 16px;
+            }
+
+            .flow-container {
+                padding: 30px;
+            }
+
+            .section {
+                margin-bottom: 40px;
+                border: 2px solid #e1e5e9;
+                border-radius: 12px;
+                overflow: hidden;
+            }
+
+            .section-header {
+                background: #f8f9fa;
+                padding: 15px 20px;
+                border-bottom: 1px solid #e1e5e9;
+                font-weight: 600;
+                font-size: 18px;
+                color: #495057;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
+
+            .section-header .number {
+                background: #25d366;
+                color: white;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 14px;
+                font-weight: bold;
+                margin-right: 15px;
+            }
+
+            .section-content {
+                padding: 20px;
+            }
+
+            .actors {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+                margin-bottom: 30px;
+            }
+
+            .actor {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 25px;
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            .flow-step {
+                margin-bottom: 20px;
+                padding: 15px;
+                border-radius: 8px;
+                border-left: 4px solid #25d366;
+                background: #f8fff9;
+            }
+
+            .step-header {
+                font-weight: 600;
+                color: #2d3748;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .step-arrow {
+                font-size: 18px;
+                margin: 0 10px;
+                color: #25d366;
+            }
+
+            .code-block {
+                background: #2d3748;
+                color: #e2e8f0;
+                padding: 15px;
+                border-radius: 6px;
+                font-family: "Courier New", monospace;
+                font-size: 13px;
+                margin: 10px 0;
+                overflow-x: auto;
+            }
+
+            .api-endpoint {
+                background: #1a365d;
+                color: #90cdf4;
+                padding: 8px 12px;
+                border-radius: 4px;
+                font-family: "Courier New", monospace;
+                font-size: 12px;
+                display: inline-block;
+                margin: 5px 0;
+            }
+
+            .parameters {
+                background: #f7fafc;
+                border: 1px solid #e2e8f0;
+                border-radius: 6px;
+                padding: 12px;
+                margin: 10px 0;
+            }
+
+            .parameters h4 {
+                color: #2d3748;
+                margin-bottom: 8px;
+                font-size: 14px;
+            }
+
+            .param-list {
+                list-style: none;
+                padding: 0;
+            }
+
+            .param-list li {
+                padding: 4px 0;
+                font-size: 13px;
+                color: #4a5568;
+            }
+
+            .param-name {
+                font-weight: 600;
+                color: #2b6cb0;
+            }
+
+            .branch {
+                display: flex;
+                gap: 20px;
+                margin: 20px 0;
+            }
+
+            .branch-item {
+                flex: 1;
+                border: 2px solid #e2e8f0;
+                border-radius: 8px;
+                padding: 15px;
+            }
+
+            .solution-partner {
+                border-color: #3182ce;
+                background: #ebf8ff;
+            }
+
+            .tech-provider {
+                border-color: #d69e2e;
+                background: #fefcbf;
+            }
+
+            .branch-header {
+                font-weight: 600;
+                margin-bottom: 12px;
+                padding: 8px 12px;
+                border-radius: 4px;
+                text-align: center;
+            }
+
+            .solution-partner .branch-header {
+                background: #3182ce;
+                color: white;
+            }
+
+            .tech-provider .branch-header {
+                background: #d69e2e;
+                color: white;
+            }
+
+            .error-types {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 15px;
+                margin-top: 15px;
+            }
+
+            .error-type {
+                background: #fff5f5;
+                border: 1px solid #feb2b2;
+                border-radius: 6px;
+                padding: 12px;
+            }
+
+            .error-type h4 {
+                color: #c53030;
+                margin-bottom: 8px;
+                font-size: 14px;
+            }
+
+            .toggle-btn {
+                background: none;
+                border: none;
+                color: #25d366;
+                font-size: 18px;
+                margin-left: auto;
+                cursor: pointer;
+                transition: transform 0.3s;
+            }
+
+            .toggle-btn.expanded {
+                transform: rotate(180deg);
+            }
+
+            .section-content.collapsed {
+                display: none;
+            }
+
+            .highlight {
+                background: #fff3cd;
+                border: 1px solid #ffeaa7;
+                border-radius: 4px;
+                padding: 8px 12px;
+                margin: 8px 0;
+                font-size: 13px;
+                color: #856404;
+            }
+
+            .response-object {
+                background: #f0fff4;
+                border: 1px solid #9ae6b4;
+                border-radius: 6px;
+                padding: 12px;
+                margin: 10px 0;
+            }
+
+            .response-object h4 {
+                color: #2f855a;
+                margin-bottom: 8px;
+                font-size: 14px;
+            }
+
+            @media (max-width: 768px) {
+                .branch {
+                    flex-direction: column;
+                }
+
+                .actors {
+                    justify-content: center;
+                }
+
+                .container {
+                    margin: 10px;
+                    border-radius: 8px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>WhatsApp Embedded Signup - Official Flow</h1>
+                <p>
+                    Based on Meta's Official Documentation | Graph API v23.0 |
+                    September 2025
+                </p>
+            </div>
+
+            <div class="flow-container">
+                <!-- Actors -->
+                <div class="section">
+                    <div class="section-header">
+                        <span class="number">👥</span>
+                        Flow Participants
+                    </div>
+                    <div class="section-content">
+                        <div class="actors">
+                            <div class="actor">User (Business Customer)</div>
+                            <div class="actor">Client App (Website/Portal)</div>
+                            <div class="actor">Facebook SDK</div>
+                            <div class="actor">Meta Embedded Signup UI</div>
+                            <div class="actor">Your Server</div>
+                            <div class="actor">Facebook Graph API</div>
+                            <div class="actor">WhatsApp Business API</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prerequisites -->
+                <div class="section">
+                    <div
+                        class="section-header"
+                        onclick="toggleSection('prereq')"
+                    >
+                        <span class="number">1</span>
+                        Prerequisites & Setup
+                        <button class="toggle-btn" id="prereq-btn">▼</button>
+                    </div>
+                    <div class="section-content" id="prereq">
+                        <div class="highlight">
+                            <strong>Required Status:</strong> Solution Partner
+                            OR Tech Provider (completed Meta onboarding)
+                        </div>
+
+                        <div class="flow-step">
+                            <div class="step-header">
+                                Facebook Login for Business Configuration
+                            </div>
+                            <div class="parameters">
+                                <h4>
+                                    Client OAuth Settings (All must be "Yes"):
+                                </h4>
+                                <ul class="param-list">
+                                    <li>
+                                        <span class="param-name"
+                                            >Client OAuth login:</span
+                                        >
+                                        Yes
+                                    </li>
+                                    <li>
+                                        <span class="param-name"
+                                            >Web OAuth login:</span
+                                        >
+                                        Yes
+                                    </li>
+                                    <li>
+                                        <span class="param-name"
+                                            >Enforce HTTPS:</span
+                                        >
+                                        Yes
+                                    </li>
+                                    <li>
+                                        <span class="param-name"
+                                            >Embedded Browser OAuth Login:</span
+                                        >
+                                        Yes
+                                    </li>
+                                    <li>
+                                        <span class="param-name"
+                                            >Login with JavaScript SDK:</span
+                                        >
+                                        Yes
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="flow-step">
+                            <div class="step-header">Create Configuration</div>
+                            <div class="parameters">
+                                <h4>Configuration Details:</h4>
+                                <ul class="param-list">
+                                    <li>
+                                        <span class="param-name"
+                                            >Login variation:</span
+                                        >
+                                        "WhatsApp Embedded Signup"
+                                    </li>
+                                    <li>
+                                        <span class="param-name"
+                                            >Permissions:</span
+                                        >
+                                        whatsapp_business_management,
+                                        whatsapp_business_messaging
+                                    </li>
+                                    <li>
+                                        <span class="param-name"
+                                            >Configuration ID:</span
+                                        >
+                                        Generated and saved for implementation
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Client Initialization -->
+                <div class="section">
+                    <div
+                        class="section-header"
+                        onclick="toggleSection('client')"
+                    >
+                        <span class="number">2</span>
+                        Client Initialization
+                        <button class="toggle-btn" id="client-btn">▼</button>
+                    </div>
+                    <div class="section-content" id="client">
+                        <div class="flow-step">
+                            <div class="step-header">
+                                User <span class="step-arrow">→</span> Client
+                                App
+                            </div>
+                            <p>User loads signup page</p>
+                        </div>
+
+                        <div class="flow-step">
+                            <div class="step-header">
+                                Client App
+                                <span class="step-arrow">→</span> Facebook SDK
+                            </div>
+                            <p>Load Facebook SDK</p>
+                            <div class="code-block">
+                                &lt;script async defer crossorigin="anonymous"
+                                src="https://connect.facebook.net/en_US/sdk.js"&gt;&lt;/script&gt;
+                            </div>
+                        </div>
+
+                        <div class="flow-step">
+                            <div class="step-header">SDK Initialization</div>
+                            <div class="code-block">
+                                window.fbAsyncInit = function() { FB.init({
+                                appId: 'YOUR_APP_ID', autoLogAppEvents: true,
+                                xfbml: true, version: 'v23.0' // Using Graph API
+                                v23.0 }); };
+                            </div>
+                        </div>
+
+                        <div class="flow-step">
+                            <div class="step-header">Event Listeners Setup</div>
+                            <div class="code-block">
+                                // Message event listener for session logging
+                                window.addEventListener('message', (event) => {
+                                if (!event.origin.endsWith('facebook.com'))
+                                return; try { const data =
+                                JSON.parse(event.data); if (data.type ===
+                                'WA_EMBEDDED_SIGNUP') { console.log('Session
+                                data:', data); // Handle session info } } catch
+                                { console.log('Event data:', event.data); } });
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Authorization -->
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection('auth')">
+                        <span class="number">3</span>
+                        User Authorization
+                        <button class="toggle-btn" id="auth-btn">▼</button>
+                    </div>
+                    <div class="section-content" id="auth">
+                        <div class="flow-step">
+                            <div class="step-header">
+                                User <span class="step-arrow">→</span> Client
+                                App
+                            </div>
+                            <p>
+                                User clicks "Connect WhatsApp Business" button
+                            </p>
+                        </div>
+
+                        <div class="flow-step">
+                            <div class="step-header">
+                                Client App
+                                <span class="step-arrow">→</span> Facebook SDK
+                            </div>
+                            <p>Launch Embedded Signup</p>
+                            <div class="code-block">
+                                const launchWhatsAppSignup = () => {
+                                FB.login(fbLoginCallback, { config_id:
+                                'YOUR_CONFIGURATION_ID', response_type: 'code',
+                                override_default_response_type: true, extras: {
+                                setup: {}, featureType: '', // '',
+                                'only_waba_sharing',
+                                'whatsapp_business_app_onboarding'
+                                sessionInfoVersion: '3' } }); }
+                            </div>
+                        </div>
+
+                        <div class="parameters">
+                            <h4>Feature Types:</h4>
+                            <ul class="param-list">
+                                <li>
+                                    <span class="param-name">'' (blank):</span>
+                                    Default flow
+                                </li>
+                                <li>
+                                    <span class="param-name"
+                                        >only_waba_sharing:</span
+                                    >
+                                    Bypass phone number screens
+                                </li>
+                                <li>
+                                    <span class="param-name"
+                                        >whatsapp_business_app_onboarding:</span
+                                    >
+                                    WhatsApp Business App onboarding
+                                </li>
+                                <li>
+                                    <span class="param-name"
+                                        >marketing_messages_lite:</span
+                                    >
+                                    Marketing Messages Lite API
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Meta Embedded Signup Flow -->
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection('meta')">
+                        <span class="number">4</span>
+                        Meta Embedded Signup Flow
+                        <button class="toggle-btn" id="meta-btn">▼</button>
+                    </div>
+                    <div class="section-content" id="meta">
+                        <div class="flow-step">
+                            <div class="step-header">
+                                Meta UI <span class="step-arrow">→</span> User:
+                                Authentication
+                            </div>
+                            <p>Facebook/Meta Business credentials login</p>
+                        </div>
+
+                        <div class="flow-step">
+                            <div class="step-header">
+                                Meta UI <span class="step-arrow">→</span> User:
+                                Business Portfolio
+                            </div>
+                            <p>Select existing portfolio or create new</p>
+                        </div>
+
+                        <div class="flow-step">
+                            <div class="step-header">
+                                Meta UI <span class="step-arrow">→</span> User:
+                                WABA Selection
+                            </div>
+                            <p>
+                                Select existing WhatsApp Business Account or
+                                create new
+                            </p>
+                        </div>
+
+                        <div class="flow-step">
+                            <div class="step-header">
+                                Meta UI <span class="step-arrow">→</span> User:
+                                Business Profile Setup
+                            </div>
+                            <p>
+                                Business name, category, display name
+                                configuration
+                            </p>
+                        </div>
+
+                        <div class="flow-step">
+                            <div class="step-header">
+                                Meta UI <span class="step-arrow">→</span> User:
+                                Phone Number Setup
+                            </div>
+                            <p>
+                                Add phone number (own number or 555 number for
+                                testing)
+                            </p>
+                        </div>
+
+                        <div class="flow-step">
+                            <div class="step-header">
+                                Meta UI <span class="step-arrow">→</span> User:
+                                Phone Verification
+                            </div>
+                            <p>SMS/Voice verification with 6-digit code</p>
+                        </div>
+
+                        <div class="flow-step">
+                            <div class="step-header">
+                                Meta UI <span class="step-arrow">→</span> User:
+                                Permissions Review
+                            </div>
+                            <p>
+                                Grant app permissions for WhatsApp Business
+                                access
+                            </p>
+                        </div>
+
+                        <div class="flow-step">
+                            <div class="step-header">
+                                User <span class="step-arrow">→</span> Meta UI
+                            </div>
+                            <p>Complete all steps and approve permissions</p>
+                        </div>
+
+                        <div class="flow-step">
+                            <div class="step-header">
+                                Meta UI: Generate Assets
+                            </div>
+                            <p>
+                                Create WABA, register phone number, generate
+                                tokens
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Return Data -->
+                <div class="section">
+                    <div
+                        class="section-header"
+                        onclick="toggleSection('return')"
+                    >
+                        <span class="number">5</span>
+                        Return Data to Client
+                        <button class="toggle-btn" id="return-btn">▼</button>
+                    </div>
+                    <div class="section-content" id="return">
+                        <div class="flow-step">
+                            <div class="step-header">
+                                Authorization Code Response
+                            </div>
+                            <div class="highlight">
+                                ⚠️ 30-second TTL - Must be exchanged immediately
+                            </div>
+                            <div class="response-object">
+                                <h4>FB.login Callback Response:</h4>
+                                <div class="code-block">
+                                    { authResponse: { code:
+                                    'AUTHORIZATION_CODE_HERE' // 30-second
+                                    expiration } }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flow-step">
+                            <div class="step-header">
+                                Session Info Message Event
+                            </div>
+                            <div class="response-object">
+                                <h4>Window Message Event:</h4>
+                                <div class="code-block">
+                                    { data: { phone_number_id:
+                                    'CUSTOMER_BUSINESS_PHONE_NUMBER_ID',
+                                    waba_id: 'CUSTOMER_WABA_ID', business_id:
+                                    'CUSTOMER_BUSINESS_PORTFOLIO_ID' }, type:
+                                    'WA_EMBEDDED_SIGNUP', event: 'FINISH' // or
+                                    'FINISH_ONLY_WABA',
+                                    'FINISH_WHATSAPP_BUSINESS_APP_ONBOARDING' }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flow-step">
+                            <div class="step-header">
+                                Client App
+                                <span class="step-arrow">→</span> Your Server
+                            </div>
+                            <p>
+                                Send authorization code and session data
+                                immediately
+                            </p>
+                            <div class="api-endpoint">
+                                POST /api/whatsapp/setup
+                            </div>
+                            <div class="code-block">
+                                { "authorization_code": "CODE", "waba_id":
+                                "WABA_ID", "phone_number_id": "PHONE_NUMBER_ID",
+                                "business_id": "BUSINESS_ID" }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Server Processing -->
+                <div class="section">
+                    <div
+                        class="section-header"
+                        onclick="toggleSection('server')"
+                    >
+                        <span class="number">6</span>
+                        Server-Side Processing
+                        <button class="toggle-btn" id="server-btn">▼</button>
+                    </div>
+                    <div class="section-content" id="server">
+                        <div class="branch">
+                            <div class="branch-item solution-partner">
+                                <div class="branch-header">
+                                    Solution Partner Flow
+                                </div>
+
+                                <div class="flow-step">
+                                    <div class="step-header">
+                                        Step 1: Exchange Token
+                                    </div>
+                                    <div class="api-endpoint">
+                                        GET /v23.0/oauth/access_token
+                                    </div>
+                                    <div class="parameters">
+                                        <ul class="param-list">
+                                            <li>
+                                                <span class="param-name"
+                                                    >client_id:</span
+                                                >
+                                                APP_ID
+                                            </li>
+                                            <li>
+                                                <span class="param-name"
+                                                    >client_secret:</span
+                                                >
+                                                APP_SECRET
+                                            </li>
+                                            <li>
+                                                <span class="param-name"
+                                                    >code:</span
+                                                >
+                                                AUTHORIZATION_CODE
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="response-object">
+                                        <h4>Returns:</h4>
+                                        <div class="code-block">
+                                            BUSINESS_INTEGRATION_SYSTEM_USER_TOKEN
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flow-step">
+                                    <div class="step-header">
+                                        Step 2: Subscribe Webhooks
+                                    </div>
+                                    <div class="api-endpoint">
+                                        POST /v23.0/{WABA_ID}/subscribed_apps
+                                    </div>
+                                    <div class="parameters">
+                                        <ul class="param-list">
+                                            <li>
+                                                <span class="param-name"
+                                                    >Authorization:</span
+                                                >
+                                                Bearer BUSINESS_TOKEN
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="flow-step">
+                                    <div class="step-header">
+                                        Step 3: Share Credit Line
+                                    </div>
+                                    <div class="api-endpoint">
+                                        POST
+                                        /v23.0/{EXTENDED_CREDIT_LINE_ID}/whatsapp_credit_sharing_and_attach
+                                    </div>
+                                    <div class="parameters">
+                                        <ul class="param-list">
+                                            <li>
+                                                <span class="param-name"
+                                                    >waba_currency:</span
+                                                >
+                                                USD/EUR/GBP/etc
+                                            </li>
+                                            <li>
+                                                <span class="param-name"
+                                                    >waba_id:</span
+                                                >
+                                                CUSTOMER_WABA_ID
+                                            </li>
+                                            <li>
+                                                <span class="param-name"
+                                                    >Authorization:</span
+                                                >
+                                                Bearer SYSTEM_TOKEN
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="flow-step">
+                                    <div class="step-header">
+                                        Step 4: Register Phone Number
+                                    </div>
+                                    <div class="api-endpoint">
+                                        POST
+                                        /v23.0/{BUSINESS_PHONE_NUMBER_ID}/register
+                                    </div>
+                                    <div class="code-block">
+                                        { "messaging_product": "whatsapp",
+                                        "pin": "6-digit-PIN" }
+                                    </div>
+                                </div>
+
+                                <div class="flow-step">
+                                    <div class="step-header">
+                                        Step 5: Test Message (Optional)
+                                    </div>
+                                    <div class="api-endpoint">
+                                        POST
+                                        /v23.0/{BUSINESS_PHONE_NUMBER_ID}/messages
+                                    </div>
+                                    <div class="code-block">
+                                        { "messaging_product": "whatsapp",
+                                        "recipient_type": "individual", "to":
+                                        "WHATSAPP_USER_NUMBER", "type": "text",
+                                        "text": {"body": "Test message"} }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="branch-item tech-provider">
+                                <div class="branch-header">
+                                    Tech Provider Flow
+                                </div>
+
+                                <div class="flow-step">
+                                    <div class="step-header">
+                                        Step 1: Exchange Token
+                                    </div>
+                                    <div class="api-endpoint">
+                                        GET /v23.0/oauth/access_token
+                                    </div>
+                                    <p><em>Same as Solution Partner</em></p>
+                                </div>
+
+                                <div class="flow-step">
+                                    <div class="step-header">
+                                        Step 2: Subscribe Webhooks
+                                    </div>
+                                    <div class="api-endpoint">
+                                        POST /v23.0/{WABA_ID}/subscribed_apps
+                                    </div>
+                                    <p><em>Same as Solution Partner</em></p>
+                                </div>
+
+                                <div class="flow-step">
+                                    <div class="step-header">
+                                        Step 3: Register Phone Number
+                                    </div>
+                                    <div class="api-endpoint">
+                                        POST
+                                        /v23.0/{BUSINESS_PHONE_NUMBER_ID}/register
+                                    </div>
+                                    <p>
+                                        <em>Same as Solution Partner Step 4</em>
+                                    </p>
+                                </div>
+
+                                <div class="flow-step">
+                                    <div class="step-header">
+                                        Step 4: Test Message (Optional)
+                                    </div>
+                                    <div class="api-endpoint">
+                                        POST
+                                        /v23.0/{BUSINESS_PHONE_NUMBER_ID}/messages
+                                    </div>
+                                    <p>
+                                        <em>Same as Solution Partner Step 5</em>
+                                    </p>
+                                </div>
+
+                                <div class="flow-step">
+                                    <div class="step-header">
+                                        Step 5: Payment Instructions
+                                    </div>
+                                    <p>
+                                        Direct customer to add payment method:
+                                    </p>
+                                    <div class="highlight">
+                                        <strong>Link:</strong>
+                                        https://www.facebook.com/business/help/488291839463771
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Handling -->
+                <div class="section">
+                    <div
+                        class="section-header"
+                        onclick="toggleSection('errors')"
+                    >
+                        <span class="number">7</span>
+                        Error Handling & Edge Cases
+                        <button class="toggle-btn" id="errors-btn">▼</button>
+                    </div>
+                    <div class="section-content" id="errors">
+                        <div class="error-types">
+                            <div class="error-type">
+                                <h4>Abandoned Flow</h4>
+                                <div class="code-block">
+                                    { data: { current_step: 'SCREEN_NAME' },
+                                    type: 'WA_EMBEDDED_SIGNUP', event: 'CANCEL'
+                                    }
+                                </div>
+                                <div class="parameters">
+                                    <h4>Screen Names:</h4>
+                                    <ul class="param-list">
+                                        <li>BUSINESS_ACCOUNT_SELECTION</li>
+                                        <li>WABA_PHONE_PROFILE_PICKER</li>
+                                        <li>WHATSAPP_BUSINESS_PROFILE_SETUP</li>
+                                        <li>PHONE_NUMBER_SETUP</li>
+                                        <li>PHONE_NUMBER_VERIFICATION</li>
+                                        <li>PERMISSIONS</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="error-type">
+                                <h4>User Reported Errors</h4>
+                                <div class="code-block">
+                                    { data: { error_message: 'DESCRIPTION',
+                                    error_id: 'ERROR_ID', session_id:
+                                    'SESSION_ID', timestamp: 'UNIX_TIMESTAMP' },
+                                    type: 'WA_EMBEDDED_SIGNUP', event: 'CANCEL'
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="error-type">
+                                <h4>Token Exchange Errors</h4>
+                                <ul class="param-list">
+                                    <li>Invalid authorization code</li>
+                                    <li>Code expired (30-second TTL)</li>
+                                    <li>Invalid app credentials</li>
+                                    <li>Network/API timeouts</li>
+                                </ul>
+                            </div>
+
+                            <div class="error-type">
+                                <h4>Business Account Errors</h4>
+                                <ul class="param-list">
+                                    <li>Insufficient permissions</li>
+                                    <li>Business verification required</li>
+                                    <li>Account creation limits reached</li>
+                                    <li>Policy violations</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Final Response -->
+                <div class="section">
+                    <div
+                        class="section-header"
+                        onclick="toggleSection('response')"
+                    >
+                        <span class="number">8</span>
+                        Final Response to Client
+                        <button class="toggle-btn" id="response-btn">▼</button>
+                    </div>
+                    <div class="section-content" id="response">
+                        <div class="flow-step">
+                            <div class="step-header">
+                                Your Server
+                                <span class="step-arrow">→</span> Client App
+                            </div>
+                            <p>Return complete setup information</p>
+                            <div class="response-object">
+                                <h4>Success Response:</h4>
+                                <div class="code-block">
+                                    { "success": true, "message": "WhatsApp
+                                    Business Account connected successfully",
+                                    "business_info": { "waba_id":
+                                    "CUSTOMER_WABA_ID", "phone_number_id":
+                                    "CUSTOMER_PHONE_NUMBER_ID", "business_name":
+                                    "CUSTOMER_BUSINESS_NAME", "phone_number":
+                                    "+1234567890", "setup_complete": true,
+                                    "webhooks_enabled": true } }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flow-step">
+                            <div class="step-header">
+                                Client App
+                                <span class="step-arrow">→</span> User
+                            </div>
+                            <p>
+                                Display success message and business account
+                                details
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function toggleSection(sectionId) {
+                const content = document.getElementById(sectionId);
+                const button = document.getElementById(sectionId + "-btn");
+
+                if (content.classList.contains("collapsed")) {
+                    content.classList.remove("collapsed");
+                    button.classList.add("expanded");
+                    button.textContent = "▲";
+                } else {
+                    content.classList.add("collapsed");
+                    button.classList.remove("expanded");
+                    button.textContent = "▼";
+                }
+            }
+
+            // Initialize with all sections expanded
+            document.addEventListener("DOMContentLoaded", function () {
+                const buttons = document.querySelectorAll(".toggle-btn");
+                buttons.forEach((button) => {
+                    button.classList.add("expanded");
+                    button.textContent = "▲";
+                });
+            });
+        </script>
+    </body>
+</html>
